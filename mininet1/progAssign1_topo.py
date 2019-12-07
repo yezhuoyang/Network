@@ -46,6 +46,34 @@ class AssignmentNetworks(Topo):
 
 
 
+def Q1(net):
+    def H(x):
+        return net.hosts[x-1]
+    def S(x):
+        return net.switches[x-1]    
+    S(1).cmd("ping %s -c 20 >latency_L1.txt"%S(2).IP())
+    S(2).cmd("ping %s -c 20 >latency_L2.txt"%S(3).IP())
+    S(3).cmd("ping %s -c 20 >latency_L3.txt"%S(4).IP())
+    S(2).cmd("ping %s -c 20 >latency_L4.txt"%S(5).IP())
+    S(3).cmd("ping %s -c 20 >latency_L5.txt"%S(6).IP())
+    
+    S(2).cmd("java Iperfer -s -p 5000")
+    S(1).cmd("java Iperfer -c -h %s -p 5000 -t 20 > throughput_L1.txt"%S(2).IP())
+    
+    S(3).cmd("java Iperfer -s -p 5000")
+    S(2).cmd("java Iperfer -c -h %s -p 5000 -t 20 > throughput_L2.txt"%S(3).IP())
+
+    S(4).cmd("java Iperfer -s -p 5000")
+    S(3).cmd("java Iperfer -c -h %s -p 5000 -t 20 > throughput_L3.txt"%S(4).IP())
+
+    S(5).cmd("java Iperfer -s -p 5000")
+    S(2).cmd("java Iperfer -c -h %s -p 5000 -t 20 > throughput_L4.txt"%S(5).IP())
+
+    S(6).cmd("java Iperfer -s -p 5000")
+    S(3).cmd("java Iperfer -c -h %s -p 5000 -t 20 > throughput_L5.txt"%S(6).IP())
+    return
+
+
 
 if __name__ == '__main__':
     setLogLevel( 'info' )
@@ -55,6 +83,6 @@ if __name__ == '__main__':
            autoStaticArp=True)
     # Run network
     net.start()
-    CLI( net )
+    Q1(net)
     net.stop()
 
