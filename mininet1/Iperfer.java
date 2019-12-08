@@ -70,7 +70,7 @@ public class Iperfer{
 			    	    long start=System.currentTimeMillis();
 			    	    long end=start;
 			    	    int counter=0;
-			    	    while((end-start)/1000<time){
+			    	    while((end-start)<time*1000){
 			    	    	  ++counter;
 			    	    	  outputstream.write(message);
 	    					  outputstream.flush();
